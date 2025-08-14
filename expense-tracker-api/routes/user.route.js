@@ -6,8 +6,6 @@ const userRouter = express.Router();
 
 userRouter.get("/", getUsers);
 
-userRouter.post("/", (req, res) => res.send({ title: "Create new user" }));
-
 userRouter.get("/:id", authorize, getUserById);
 
 userRouter.put("/:id", (req, res) => res.send({ title: "Update user" }));
