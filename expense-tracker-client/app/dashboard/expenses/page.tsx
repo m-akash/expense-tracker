@@ -116,7 +116,7 @@ export default function ExpensesPage() {
   const loadExpenses = async () => {
     try {
       const data = await apiService.getExpenses();
-      // Fix: Type the response properly to handle both array and object with expenses property
+      //Type the response properly to handle both array and object with expenses property
       const expensesArray: Expense[] = Array.isArray(data)
         ? data
         : (data as { expenses?: Expense[] }).expenses || [];

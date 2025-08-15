@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { 
-  Home, 
-  Plus, 
-  Receipt, 
-  BarChart3, 
-  Settings, 
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Home,
+  Plus,
+  Receipt,
+  BarChart3,
+  Settings,
   TrendingUp,
-  Filter
-} from 'lucide-react';
+  Filter,
+} from "lucide-react";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -20,16 +20,14 @@ interface SidebarProps {
 }
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: Home },
-  { name: 'Add Expense', href: '/dashboard/add-expense', icon: Plus },
-  { name: 'Expenses', href: '/dashboard/expenses', icon: Receipt },
-  { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
-  { name: 'Reports', href: '/dashboard/reports', icon: TrendingUp },
+  { name: "Dashboard", href: "/dashboard", icon: Home },
+  { name: "Add Expense", href: "/dashboard/add-expense", icon: Plus },
+  { name: "Expenses", href: "/dashboard/expenses", icon: Receipt },
+  { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
+  { name: "Reports", href: "/dashboard/reports", icon: TrendingUp },
 ];
 
-const secondaryNavigation = [
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
-];
+const secondaryNavigation = [{ name: "Settings", href: "", icon: Settings }];
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
@@ -38,17 +36,17 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
     <>
       {/* Mobile backdrop */}
       {isOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden" 
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
           onClick={onClose}
         />
       )}
-      
+
       {/* Sidebar */}
       <div
         className={cn(
-          'fixed top-16 left-0 z-50 h-[calc(100vh-4rem)] w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:top-0 lg:h-screen lg:z-0',
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+          "fixed top-16 left-0 z-50 h-[calc(100vh-4rem)] w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:top-0 lg:h-screen lg:z-0",
+          isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         <div className="flex flex-col h-full">
@@ -66,8 +64,8 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                       variant={isActive ? "secondary" : "ghost"}
                       className={cn(
                         "w-full justify-start h-10 px-3 text-left font-medium transition-colors",
-                        isActive 
-                          ? "bg-blue-50 text-blue-700 hover:bg-blue-100" 
+                        isActive
+                          ? "bg-blue-50 text-blue-700 hover:bg-blue-100"
                           : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                       )}
                     >
@@ -94,8 +92,8 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                       variant={isActive ? "secondary" : "ghost"}
                       className={cn(
                         "w-full justify-start h-10 px-3 text-left font-medium transition-colors",
-                        isActive 
-                          ? "bg-blue-50 text-blue-700 hover:bg-blue-100" 
+                        isActive
+                          ? "bg-blue-50 text-blue-700 hover:bg-blue-100"
                           : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                       )}
                     >
