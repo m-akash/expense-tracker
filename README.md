@@ -1,4 +1,4 @@
-# Full-Stack Expense Tracker
+## Full-Stack Expense-Tracker Application
 
 This is a comprehensive full-stack expense tracker application designed to help users manage their finances effectively. The application provides a user-friendly interface for tracking expenses, viewing spending patterns, and generating reports. The frontend is built with Next.js and Tailwind CSS, offering a modern and responsive user experience. The backend is a robust RESTful API built with Node.js, Express, and MongoDB, ensuring secure and efficient data management.
 
