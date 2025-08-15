@@ -61,7 +61,7 @@ This is a comprehensive full-stack expense tracker application designed to help 
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/expense-tracker.git
+   git clone https://github.com/m-akash/expense-tracker
    ```
 2. **Navigate to the project directory:**
    ```bash
