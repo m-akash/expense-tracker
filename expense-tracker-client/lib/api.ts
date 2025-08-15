@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5500";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 interface LoginData {
   email: string;
@@ -44,9 +44,7 @@ class ApiService {
     const data = await response.json();
 
     if (!response.ok) {
-      // Handle different HTTP status codes
       if (response.status === 401) {
-        // Token expired or invalid
         this.logout();
         throw new Error("Authentication required. Please log in again.");
       }
@@ -71,13 +69,12 @@ class ApiService {
 
     const result: ApiResponse = await this.handleResponse(response);
 
-    // Handle your backend's response structure
     if (result.data?.token) {
       localStorage.setItem("token", result.data.token);
       localStorage.setItem("user", JSON.stringify(result.data.user));
     }
 
-    return result.data; // Return just the data part
+    return result.data;
   }
 
   async register(data: RegisterData) {
@@ -101,7 +98,6 @@ class ApiService {
       await this.handleResponse(response);
     } catch (error) {
       console.error("Logout error:", error);
-      // Continue with local cleanup even if server request fails
     } finally {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
@@ -118,7 +114,6 @@ class ApiService {
   }
 
   async createExpense(expense: Omit<Expense, "_id">): Promise<Expense> {
-    // Validate data before sending
     if (
       !expense.title?.trim() ||
       !expense.amount ||
@@ -148,12 +143,9 @@ class ApiService {
   }
 
   async updateExpense(id: string, expense: Partial<Expense>): Promise<Expense> {
-    // Validate ID
     if (!id || id.trim() === "") {
       throw new Error("Expense ID is required");
     }
-
-    // Validate required fields if they're being updated
     const updateData: any = {};
 
     if (expense.title !== undefined) {
@@ -206,13 +198,11 @@ class ApiService {
     await this.handleResponse(response);
   }
 
-  // Helper method to check if user is authenticated
   isAuthenticated(): boolean {
     if (typeof window === "undefined") return false;
     const token = localStorage.getItem("token");
     if (!token) return false;
 
-    // Optional: Check if token is expired (if you have token expiry info)
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
       const currentTime = Date.now() / 1000;
@@ -229,7 +219,6 @@ class ApiService {
     return true;
   }
 
-  // Helper method to get current user
   getCurrentUser(): any {
     if (typeof window === "undefined") return null;
     const userData = localStorage.getItem("user");

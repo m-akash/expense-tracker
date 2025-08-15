@@ -18,7 +18,6 @@ import {
   Legend,
 } from "recharts";
 import { TrendingUp, TrendingDown, DollarSign, Calendar } from "lucide-react";
-import { toast } from "sonner";
 
 const COLORS = [
   "#3B82F6",
@@ -44,14 +43,12 @@ export default function AnalyticsPage() {
   const loadExpenses = async () => {
     try {
       const data = await apiService.getExpenses();
-      //Type the response properly to handle both array and object with expenses property
       const expensesArray: Expense[] = Array.isArray(data)
         ? data
         : (data as { expenses?: Expense[] }).expenses || [];
       setExpenses(expensesArray);
     } catch (error) {
       console.error("Failed to load expenses:", error);
-      toast.error("Failed to load expenses");
     } finally {
       setLoading(false);
     }

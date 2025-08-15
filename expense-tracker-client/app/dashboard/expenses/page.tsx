@@ -123,7 +123,6 @@ export default function ExpensesPage() {
       setExpenses(expensesArray);
     } catch (error) {
       console.error("Failed to load expenses:", error);
-      toast.error("Failed to load expenses");
     } finally {
       setLoading(false);
     }
