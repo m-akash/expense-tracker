@@ -19,10 +19,10 @@ export default function AddExpensePage() {
     <DashboardLayout>
       <div className="lg:space-y-10 space-y-6 flex flex-col items-center justify-center md:py-20">
         <div>
-          <h1 className="text-3xl text-center font-bold text-gray-900">
+          <h1 className="text-3xl text-center font-bold text-blue-400">
             Add Expense
           </h1>
-          <p className="text-gray-600 mt-2 text-center">
+          <p className="text-blue-300 mt-2 text-center">
             Track your spending by adding a new expense.
           </p>
         </div>

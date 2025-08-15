@@ -115,9 +115,9 @@ export function ExpenseForm({
   };
 
   return (
-    <Card className="border-0 shadow-sm">
+    <Card className="border-0 bg-gray-800 shadow-sm">
       <CardHeader>
-        <CardTitle>{expense ? "Edit expense" : "Add new expense"}</CardTitle>
+        <CardTitle>{expense ? "Edit expense" : "Add a new expense"}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -161,7 +161,7 @@ export function ExpenseForm({
             <div className="space-y-2">
               <Label htmlFor="category">Category *</Label>
               <Select value={category} onValueChange={setCategory} required>
-                <SelectTrigger className="h-11">
+                <SelectTrigger className="h-11 bg-gray-800 text-blue-300">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -181,7 +181,7 @@ export function ExpenseForm({
                   <Button
                     variant="outline"
                     className={cn(
-                      "w-full h-11 justify-start text-left font-normal",
+                      "w-full h-11 justify-start bg-gray-800 text-blue-300 text-left font-normal",
                       !date && "text-muted-foreground"
                     )}
                   >
@@ -204,7 +204,7 @@ export function ExpenseForm({
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Button
               type="submit"
-              className="flex-1 h-11 bg-blue-600 hover:bg-blue-700"
+              className="flex-1 h-11 bg-blue-800 hover:bg-blue-700 text-gray-300"
               disabled={isLoading}
             >
               {isLoading ? (

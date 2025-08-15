@@ -17,7 +17,6 @@ export default function DashboardPage() {
   const loadExpenses = async () => {
     try {
       const data = await apiService.getExpenses();
-      //Type the response properly to handle both array and object with expenses property
       const expensesArray: Expense[] = Array.isArray(data)
         ? data
         : (data as { expenses?: Expense[] }).expenses || [];
@@ -85,8 +84,8 @@ export default function DashboardPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-3xl font-bold text-blue-400">Dashboard</h1>
+          <p className="text-blue-300 mt-2">
             Welcome back! Here&apos;s your expense overview.
           </p>
         </div>
@@ -94,14 +93,14 @@ export default function DashboardPage() {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat) => (
-            <Card key={stat.title} className="border-0 shadow-sm">
+            <Card key={stat.title} className="border-0 bg-gray-800 shadow-sm">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 mb-1">
+                    <p className="text-sm font-medium text-blue-400 mb-1">
                       {stat.title}
                     </p>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-2xl font-bold text-blue-400">
                       {stat.value}
                     </p>
                   </div>
@@ -115,34 +114,34 @@ export default function DashboardPage() {
         </div>
 
         {/* Recent Expenses */}
-        <Card className="border-0 shadow-sm">
+        <Card className="border-0 bg-gray-800 shadow-sm">
           <CardHeader>
             <CardTitle>Recent Expenses</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
-              <div className="text-center py-8 text-gray-500">Loading...</div>
+              <div className="text-center py-8 text-blue-300">Loading...</div>
             ) : recentExpenses.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-blue-400">
                 No expenses found. Add your first expense to get started!
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-4 bg-gray-800">
                 {recentExpenses.map((expense) => (
                   <div
                     key={expense._id}
-                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                    className="flex items-center justify-between p-4 bg-gray-700 hover:bg-gray-600 rounded-lg"
                   >
                     <div className="flex-1">
-                      <h4 className="font-medium text-gray-900">
+                      <h4 className="font-medium text-blue-400">
                         {expense.title}
                       </h4>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-blue-400">
                         {expense.category} •{" "}
                         {new Date(expense.date).toLocaleDateString()}
                       </p>
                     </div>
-                    <div className="text-lg font-semibold text-gray-900">
+                    <div className="text-lg font-semibold text-blue-400">
                       ${expense.amount.toFixed(2)}
                     </div>
                   </div>

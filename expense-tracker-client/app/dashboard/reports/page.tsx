@@ -17,7 +17,6 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { TrendingUp, TrendingDown, DollarSign, Calendar } from "lucide-react";
 import { toast } from "sonner";
 
 const COLORS = [
@@ -44,7 +43,6 @@ export default function AnalyticsPage() {
   const loadExpenses = async () => {
     try {
       const data = await apiService.getExpenses();
-      //Type the response properly to handle both array and object with expenses property
       const expensesArray: Expense[] = Array.isArray(data)
         ? data
         : (data as { expenses?: Expense[] }).expenses || [];
@@ -145,24 +143,24 @@ export default function AnalyticsPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Reports</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-3xl font-bold text-blue-400">Reports</h1>
+          <p className="text-blue-300 mt-2">
             Insights into your spending patterns
           </p>
         </div>
 
         {expenses.length === 0 ? (
-          <Card className="border-0 shadow-sm">
+          <Card className="border-0 bg-gray-800 shadow-sm">
             <CardContent className="p-12 text-center">
-              <p className="text-gray-500">
-                No expense data available for reports.
+              <p className="text-blue-400">
+                No expense data available for analytics.
               </p>
             </CardContent>
           </Card>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Pie Chart - Expenses by Category */}
-            <Card className="border-0 shadow-sm">
+            <Card className="border-0 bg-gray-800 shadow-sm">
               <CardHeader>
                 <CardTitle>Expenses by Category</CardTitle>
               </CardHeader>
@@ -200,7 +198,7 @@ export default function AnalyticsPage() {
             </Card>
 
             {/* Bar Chart - Monthly Trends */}
-            <Card className="border-0 shadow-sm">
+            <Card className="border-0 bg-gray-800 shadow-sm">
               <CardHeader>
                 <CardTitle>Monthly Spending Trends</CardTitle>
               </CardHeader>
@@ -249,7 +247,7 @@ export default function AnalyticsPage() {
 
         {/* Category Breakdown Table */}
         {categoryData.length > 0 && (
-          <Card className="border-0 shadow-sm">
+          <Card className="border-0 bg-gray-800 shadow-sm">
             <CardHeader>
               <CardTitle>Category Breakdown</CardTitle>
             </CardHeader>
@@ -260,7 +258,7 @@ export default function AnalyticsPage() {
                   .map((category, index) => (
                     <div
                       key={category.name}
-                      className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                      className="flex items-center justify-between p-4 bg-gray-700 rounded-lg"
                     >
                       <div className="flex items-center space-x-3">
                         <div
@@ -269,15 +267,15 @@ export default function AnalyticsPage() {
                             backgroundColor: COLORS[index % COLORS.length],
                           }}
                         />
-                        <span className="font-medium text-gray-900">
+                        <span className="font-medium text-blue-400">
                           {category.name}
                         </span>
                       </div>
                       <div className="text-right">
-                        <div className="font-semibold text-gray-900">
+                        <div className="font-semibold text-blue-400">
                           ${category.value.toFixed(2)}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-blue-300">
                           {((category.value / totalAmount) * 100).toFixed(1)}%
                         </div>
                       </div>

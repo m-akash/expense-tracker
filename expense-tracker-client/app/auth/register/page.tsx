@@ -46,13 +46,15 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-md shadow-lg border-0">
+      <Card className="w-full max-w-md shadow-lg bg-gray-800 border-0">
         <CardHeader className="space-y-1 text-center">
-          <div className="flex items-center justify-center w-12 h-12 bg-blue-600 rounded-full mx-auto mb-4">
-            <DollarSign className="w-6 h-6 text-white" />
+          <div className="flex items-center justify-center w-12 h-12 bg-blue-800 rounded-full mx-auto mb-4">
+            <DollarSign className="w-6 h-6 text-gray-300" />
           </div>
-          <CardTitle className="text-2xl font-bold">Create account</CardTitle>
-          <CardDescription className="text-gray-600">
+          <CardTitle className="text-2xl font-bold text-blue-400">
+            Create account
+          </CardTitle>
+          <CardDescription className="text-blue-300">
             Get started with ExpenseTracker today
           </CardDescription>
         </CardHeader>
@@ -103,7 +105,7 @@ export default function RegisterPage() {
           <CardFooter className="flex flex-col space-y-4">
             <Button
               type="submit"
-              className="w-full h-11 bg-blue-600 hover:bg-blue-700 transition-colors"
+              className="w-full h-11 bg-blue-800 hover:bg-blue-700 text-gray-300 transition-colors"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -115,11 +117,11 @@ export default function RegisterPage() {
                 "Create account"
               )}
             </Button>
-            <p className="text-center text-sm text-gray-600">
+            <p className="text-center text-sm text-blue-300">
               Already have an account?{" "}
               <Link
                 href="/auth/login"
-                className="text-blue-600 hover:text-blue-700 font-medium"
+                className="text-blue-700 hover:text-blue-600 font-medium"
               >
                 Sign in
               </Link>

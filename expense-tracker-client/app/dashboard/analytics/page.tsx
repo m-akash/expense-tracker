@@ -128,8 +128,8 @@ export default function AnalyticsPage() {
       <DashboardLayout>
         <div className="space-y-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Analytics</h1>
-            <p className="text-gray-600 mt-2">
+            <h1 className="text-3xl font-bold text-blue-400">Analytics</h1>
+            <p className="text-blue-400 mt-2">
               Loading your expense analytics...
             </p>
           </div>
@@ -142,22 +142,22 @@ export default function AnalyticsPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Analytics</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-3xl font-bold text-blue-400">Analytics</h1>
+          <p className="text-blue-300 mt-2">
             Insights into your spending patterns
           </p>
         </div>
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="border-0 shadow-sm">
+          <Card className="border-0 bg-gray-800 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 mb-1">
+                  <p className="text-sm font-medium text-blue-400 mb-1">
                     This Month
                   </p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-2xl font-bold text-blue-400">
                     ${thisMonthAmount.toFixed(2)}
                   </p>
                   <div className="flex items-center mt-2">
@@ -182,17 +182,17 @@ export default function AnalyticsPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-sm">
+          <Card className="border-0 bg-gray-800 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 mb-1">
+                  <p className="text-sm font-medium text-blue-400 mb-1">
                     Average Expense
                   </p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-2xl font-bold text-blue-400">
                     ${averageExpense.toFixed(2)}
                   </p>
-                  <p className="text-sm text-gray-500 mt-2">Per transaction</p>
+                  <p className="text-sm text-blue-300 mt-2">Per transaction</p>
                 </div>
                 <div className="p-3 bg-green-100 rounded-full">
                   <DollarSign className="w-6 h-6 text-green-600" />
@@ -201,17 +201,17 @@ export default function AnalyticsPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-sm">
+          <Card className="border-0 bg-gray-800 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 mb-1">
+                  <p className="text-sm font-medium text-blue-400 mb-1">
                     Total Expenses
                   </p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-2xl font-bold text-blue-400">
                     ${totalAmount.toFixed(2)}
                   </p>
-                  <p className="text-sm text-gray-500 mt-2">All time</p>
+                  <p className="text-sm text-blue-300 mt-2">All time</p>
                 </div>
                 <div className="p-3 bg-purple-100 rounded-full">
                   <TrendingUp className="w-6 h-6 text-purple-600" />
@@ -220,17 +220,17 @@ export default function AnalyticsPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-sm">
+          <Card className="border-0 bg-gray-800 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 mb-1">
+                  <p className="text-sm font-medium text-blue-400 mb-1">
                     Categories
                   </p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-2xl font-bold text-blue-400">
                     {categoryData.length}
                   </p>
-                  <p className="text-sm text-gray-500 mt-2">Different types</p>
+                  <p className="text-sm text-blue-300 mt-2">Different types</p>
                 </div>
                 <div className="p-3 bg-orange-100 rounded-full">
                   <TrendingUp className="w-6 h-6 text-orange-600" />
@@ -241,9 +241,9 @@ export default function AnalyticsPage() {
         </div>
 
         {expenses.length === 0 ? (
-          <Card className="border-0 shadow-sm">
+          <Card className="border-0 bg-gray-800 shadow-sm">
             <CardContent className="p-12 text-center">
-              <p className="text-gray-500">
+              <p className="text-blue-400">
                 No expense data available for analytics.
               </p>
             </CardContent>
@@ -251,7 +251,7 @@ export default function AnalyticsPage() {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Pie Chart - Expenses by Category */}
-            <Card className="border-0 shadow-sm">
+            <Card className="border-0 bg-gray-800 shadow-sm">
               <CardHeader>
                 <CardTitle>Expenses by Category</CardTitle>
               </CardHeader>
@@ -289,7 +289,7 @@ export default function AnalyticsPage() {
             </Card>
 
             {/* Bar Chart - Monthly Trends */}
-            <Card className="border-0 shadow-sm">
+            <Card className="border-0 bg-gray-800 shadow-sm">
               <CardHeader>
                 <CardTitle>Monthly Spending Trends</CardTitle>
               </CardHeader>
@@ -338,7 +338,7 @@ export default function AnalyticsPage() {
 
         {/* Category Breakdown Table */}
         {categoryData.length > 0 && (
-          <Card className="border-0 shadow-sm">
+          <Card className="border-0 bg-gray-800 shadow-sm">
             <CardHeader>
               <CardTitle>Category Breakdown</CardTitle>
             </CardHeader>
@@ -349,7 +349,7 @@ export default function AnalyticsPage() {
                   .map((category, index) => (
                     <div
                       key={category.name}
-                      className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                      className="flex items-center justify-between p-4 bg-gray-700 rounded-lg"
                     >
                       <div className="flex items-center space-x-3">
                         <div
@@ -358,15 +358,15 @@ export default function AnalyticsPage() {
                             backgroundColor: COLORS[index % COLORS.length],
                           }}
                         />
-                        <span className="font-medium text-gray-900">
+                        <span className="font-medium text-blue-400">
                           {category.name}
                         </span>
                       </div>
                       <div className="text-right">
-                        <div className="font-semibold text-gray-900">
+                        <div className="font-semibold text-blue-400">
                           ${category.value.toFixed(2)}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-blue-300">
                           {((category.value / totalAmount) * 100).toFixed(1)}%
                         </div>
                       </div>

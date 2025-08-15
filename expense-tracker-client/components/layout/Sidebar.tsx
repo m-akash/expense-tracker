@@ -44,7 +44,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Sidebar */}
       <div
         className={cn(
-          "fixed top-16 left-0 z-50 h-[calc(100vh-4rem)] w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-in-out overflow-hidden lg:relative lg:translate-x-0 lg:top-0 lg:h-full lg:z-0",
+          "fixed top-16 left-0 z-50 h-[calc(100vh-4rem)] w-64 bg-gray-900 border-r border-gray-600 text-blue-300 transform transition-transform duration-200 ease-in-out overflow-hidden lg:relative lg:translate-x-0 lg:top-0 lg:h-full lg:z-0",
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
@@ -60,12 +60,12 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     onClick={() => window.innerWidth < 1024 && onClose()}
                   >
                     <Button
-                      variant={isActive ? "secondary" : "ghost"}
+                      variant={isActive ? "default" : "ghost"}
                       className={cn(
-                        "w-full justify-start h-10 px-3 text-left font-medium transition-colors",
+                        "w-full justify-start h-10 px-3 py-3 my-4 text-left font-medium transition-colors",
                         isActive
-                          ? "bg-blue-50 text-blue-700 hover:bg-blue-100"
-                          : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                          ? "bg-gray-700 text-blue-400"
+                          : "text-blue-400 hover:text-gray-900"
                       )}
                     >
                       <item.icon className="w-5 h-5 mr-3" />
@@ -78,7 +78,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           </div>
 
           <div className="px-4 pb-6 flex-shrink-0">
-            <div className="border-t border-gray-200 pt-4">
+            <div className="border-t border-gray-600 pt-4">
               {secondaryNavigation.map((item) => {
                 const isActive = pathname === item.href;
                 return (
@@ -88,12 +88,12 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     onClick={() => window.innerWidth < 1024 && onClose()}
                   >
                     <Button
-                      variant={isActive ? "secondary" : "ghost"}
+                      variant={isActive ? "default" : "ghost"}
                       className={cn(
                         "w-full justify-start h-10 px-3 text-left font-medium transition-colors",
                         isActive
-                          ? "bg-blue-50 text-blue-700 hover:bg-blue-100"
-                          : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                          ? "bg-gray-700 text-blue-700"
+                          : "text-blue-400 hover:text-gray-900"
                       )}
                     >
                       <item.icon className="w-5 h-5 mr-3" />

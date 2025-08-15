@@ -203,13 +203,13 @@ export default function ExpensesPage() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Expenses</h1>
-            <p className="text-gray-600 mt-2">
+            <h1 className="text-3xl font-bold text-blue-400">Expenses</h1>
+            <p className="text-blue-300 mt-2">
               Manage and track all your expenses
             </p>
           </div>
           <Link href={"/dashboard/add-expense"}>
-            <Button className="bg-blue-600 hover:bg-blue-700">
+            <Button className="bg-blue-800 hover:bg-blue-700 text-gray-300">
               <Plus className="w-4 h-4 mr-2" />
               Add Expense
             </Button>
@@ -217,22 +217,22 @@ export default function ExpensesPage() {
         </div>
 
         {/* Summary Card */}
-        <Card className="border-0 shadow-sm bg-gradient-to-r from-blue-50 to-indigo-50">
+        <Card className="border-0 shadow-sm bg-gray-800">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 mb-1">
+                <p className="text-sm font-medium text-blue-400 mb-1">
                   Total {hasActiveFilters ? "Filtered" : ""} Expenses
                 </p>
-                <p className="text-3xl font-bold text-gray-900">
+                <p className="text-3xl font-bold text-blue-400">
                   ${totalAmount.toFixed(2)}
                 </p>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-blue-300 mt-1">
                   {filteredExpenses.length} transaction
                   {filteredExpenses.length !== 1 ? "s" : ""}
                 </p>
               </div>
-              <div className="p-3 bg-blue-100 rounded-full">
+              <div className="p-3 bg-gray-700 rounded-full">
                 <Filter className="w-8 h-8 text-blue-600" />
               </div>
             </div>
@@ -240,7 +240,7 @@ export default function ExpensesPage() {
         </Card>
 
         {/* Filters */}
-        <Card className="border-0 shadow-sm">
+        <Card className="border-0 bg-gray-800 shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Filter className="w-5 h-5" />
@@ -265,11 +265,11 @@ export default function ExpensesPage() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-blue-300">
                   Search
                 </label>
                 <div className="relative">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Search className="absolute left-3 top-3 h-4 w-4 text-blue-300" />
                   <Input
                     placeholder="Search expenses..."
                     value={searchTerm}
@@ -280,18 +280,20 @@ export default function ExpensesPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-blue-300">
                   Category
                 </label>
                 <Select
                   value={selectedCategory}
                   onValueChange={setSelectedCategory}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-11 bg-gray-800 text-blue-300">
                     <SelectValue placeholder="All categories" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All categories</SelectItem>
+                    <SelectItem className="text-blue-300" value="all">
+                      All categories
+                    </SelectItem>
                     {categories.map((category) => (
                       <SelectItem key={category} value={category}>
                         {category}
@@ -302,7 +304,7 @@ export default function ExpensesPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-blue-300">
                   From Date
                 </label>
                 <Popover>
@@ -310,7 +312,7 @@ export default function ExpensesPage() {
                     <Button
                       variant="outline"
                       className={cn(
-                        "w-full justify-start text-left font-normal",
+                        "w-full justify-start bg-gray-800 text-blue-300 text-left font-normal",
                         !dateFrom && "text-muted-foreground"
                       )}
                     >
@@ -330,7 +332,7 @@ export default function ExpensesPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-blue-300">
                   To Date
                 </label>
                 <Popover>
@@ -338,7 +340,7 @@ export default function ExpensesPage() {
                     <Button
                       variant="outline"
                       className={cn(
-                        "w-full justify-start text-left font-normal",
+                        "w-full justify-start bg-gray-800 text-blue-300 text-left font-normal",
                         !dateTo && "text-muted-foreground"
                       )}
                     >
@@ -370,7 +372,7 @@ export default function ExpensesPage() {
 
         {/* Responsive Expense Display */}
         {loading ? (
-          <Card className="border-0 shadow-sm">
+          <Card className="border-0 bg-gray-800 text-blue-300 shadow-sm">
             <CardContent className="p-12 text-center">
               <div className="text-gray-500">Loading expenses...</div>
             </CardContent>
@@ -398,20 +400,20 @@ export default function ExpensesPage() {
                 .map((expense) => (
                   <Card
                     key={expense._id}
-                    className="border-0 shadow-sm hover:shadow-md transition-shadow"
+                    className="border-0 shadow-sm bg-gray-800 text-blue-300 hover:shadow-md transition-shadow"
                   >
                     <CardContent className="p-4">
                       <div className="flex justify-between items-start mb-3">
                         <div className="flex-1">
-                          <h3 className="font-semibold text-gray-900 text-lg leading-tight">
+                          <h3 className="font-semibold text-blue-400 text-lg leading-tight">
                             {expense.title}
                           </h3>
-                          <p className="text-sm text-gray-600 mt-1">
+                          <p className="text-sm text-blue-300 mt-1">
                             {format(new Date(expense.date), "MMM dd, yyyy")}
                           </p>
                         </div>
                         <div className="text-right ml-4">
-                          <p className="text-xl font-bold text-gray-900">
+                          <p className="text-xl font-bold text-blue-400">
                             ${expense.amount.toFixed(2)}
                           </p>
                         </div>
@@ -420,19 +422,19 @@ export default function ExpensesPage() {
                       <div className="flex items-center justify-between mb-4">
                         <Badge
                           variant="secondary"
-                          className="bg-blue-50 text-blue-700 border-blue-200"
+                          className="bg-gray-300 text-blue-900 border-gray-200"
                         >
                           {expense.category}
                         </Badge>
                       </div>
 
                       {(expense as any).description && (
-                        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                        <p className="text-blue-300 text-sm mb-4 line-clamp-2">
                           {(expense as any).description}
                         </p>
                       )}
 
-                      <div className="flex justify-end space-x-2 pt-2 border-t border-gray-100">
+                      <div className="flex justify-end space-x-2 pt-2 border-t border-gray-500">
                         <Button
                           variant="outline"
                           size="sm"
@@ -455,7 +457,7 @@ export default function ExpensesPage() {
                 ))}
 
               {filteredExpenses.length === 0 && (
-                <Card className="border-0 shadow-sm">
+                <Card className="border-0 bg-gray-800 text-blue-300 shadow-sm">
                   <CardContent className="p-12 text-center">
                     <div className="text-gray-500">
                       {hasActiveFilters
@@ -469,7 +471,7 @@ export default function ExpensesPage() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex flex-col bg-gray-800 text-blue-300 sm:flex-row items-center justify-between gap-4">
                 <p className="text-sm text-gray-600 order-2 sm:order-1">
                   Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
                   {Math.min(
@@ -506,7 +508,7 @@ export default function ExpensesPage() {
                       .map((page, index, array) => (
                         <div key={page} className="flex items-center">
                           {index > 0 && array[index - 1] !== page - 1 && (
-                            <span className="px-1 text-gray-400 text-sm">
+                            <span className="px-1 text-blue-300 text-sm">
                               ...
                             </span>
                           )}
@@ -545,9 +547,9 @@ export default function ExpensesPage() {
 
         {/* Edit Dialog */}
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-2xl bg-gray-900">
             <DialogHeader>
-              <DialogTitle>Edit Expense</DialogTitle>
+              <DialogTitle></DialogTitle>
             </DialogHeader>
             {editingExpense && (
               <ExpenseForm
