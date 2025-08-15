@@ -80,7 +80,7 @@ This is a comprehensive full-stack expense tracker application designed to help 
    ```
 3. **Create a `.env.development.local` file** in the root of the `expense-tracker-api` directory and add the following environment variables:
    ```
-   PORT=5000
+   PORT=5500
    NODE_ENV=development
    DB_URI=<your-mongodb-uri>
    JWT_SECRET=<your-jwt-secret>
