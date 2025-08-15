@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/auth.tsx';
-import { Loader2 } from 'lucide-react';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth";
+import { Loader2 } from "lucide-react";
 
 export default function HomePage() {
   const { user, isLoading } = useAuth();
@@ -12,9 +12,9 @@ export default function HomePage() {
   useEffect(() => {
     if (!isLoading) {
       if (user) {
-        router.push('/dashboard');
+        router.push("/dashboard");
       } else {
-        router.push('/auth/login');
+        router.push("/auth/login");
       }
     }
   }, [user, isLoading, router]);

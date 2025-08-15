@@ -40,6 +40,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
+import Link from "next/link";
 
 const categories = [
   "Food & Dining",
@@ -203,10 +204,12 @@ export default function ExpensesPage() {
               Manage and track all your expenses
             </p>
           </div>
-          <Button className="bg-blue-600 hover:bg-blue-700">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Expense
-          </Button>
+          <Link href={"/dashboard/add-expense"}>
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Expense
+            </Button>
+          </Link>
         </div>
 
         {/* Summary Card */}

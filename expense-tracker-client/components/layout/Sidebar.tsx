@@ -10,7 +10,6 @@ import {
   Receipt, 
   BarChart3, 
   Settings, 
-  CreditCard,
   TrendingUp,
   Filter
 } from 'lucide-react';
@@ -25,7 +24,6 @@ const navigation = [
   { name: 'Add Expense', href: '/dashboard/add-expense', icon: Plus },
   { name: 'Expenses', href: '/dashboard/expenses', icon: Receipt },
   { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
-  { name: 'Categories', href: '/dashboard/categories', icon: Filter },
   { name: 'Reports', href: '/dashboard/reports', icon: TrendingUp },
 ];
 

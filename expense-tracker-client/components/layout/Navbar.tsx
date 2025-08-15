@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useAuth } from '@/lib/auth';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
-import { Bell, Settings, LogOut, DollarSign, Menu } from 'lucide-react';
+import { useAuth } from "@/lib/auth";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Bell, Settings, LogOut, DollarSign, Menu } from "lucide-react";
 
 interface NavbarProps {
   onToggleSidebar: () => void;
@@ -22,9 +22,9 @@ export function Navbar({ onToggleSidebar }: NavbarProps) {
 
   const getInitials = (name: string) => {
     return name
-      .split(' ')
-      .map(word => word[0])
-      .join('')
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
       .toUpperCase()
       .slice(0, 2);
   };
@@ -41,13 +41,13 @@ export function Navbar({ onToggleSidebar }: NavbarProps) {
           >
             <Menu className="w-5 h-5" />
           </Button>
-          
+
           <div className="flex items-center space-x-2">
             <div className="flex items-center justify-center w-8 h-8 bg-blue-600 rounded-lg">
               <DollarSign className="w-5 h-5 text-white" />
             </div>
             <h1 className="text-xl font-bold text-gray-900 hidden sm:block">
-              ExpenseTracker Pro
+              Personal Expense Tracker
             </h1>
           </div>
         </div>
@@ -55,17 +55,17 @@ export function Navbar({ onToggleSidebar }: NavbarProps) {
         <div className="flex items-center space-x-4">
           <Button variant="ghost" size="sm" className="relative">
             <Bell className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-              3
-            </span>
           </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+              <Button
+                variant="ghost"
+                className="relative h-10 w-10 rounded-full"
+              >
                 <Avatar>
                   <AvatarFallback className="bg-blue-100 text-blue-700 font-medium">
-                    {user ? getInitials(user.name) : 'U'}
+                    {user ? getInitials(user.name) : "U"}
                   </AvatarFallback>
                 </Avatar>
               </Button>

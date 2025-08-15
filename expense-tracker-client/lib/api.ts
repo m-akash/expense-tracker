@@ -44,6 +44,18 @@ class ApiService {
     const data = await response.json();
 
     if (!response.ok) {
+      // Handle different HTTP status codes
+      if (response.status === 401) {
+        // Token expired or invalid
+        this.logout();
+        throw new Error("Authentication required. Please log in again.");
+      }
+      if (response.status === 403) {
+        throw new Error("You don't have permission to perform this action.");
+      }
+      if (response.status === 404) {
+        throw new Error(data.message || "Resource not found.");
+      }
       throw new Error(data.message || `HTTP error! status: ${response.status}`);
     }
 
@@ -106,10 +118,29 @@ class ApiService {
   }
 
   async createExpense(expense: Omit<Expense, "_id">): Promise<Expense> {
+    // Validate data before sending
+    if (
+      !expense.title?.trim() ||
+      !expense.amount ||
+      !expense.category ||
+      !expense.date
+    ) {
+      throw new Error("All fields are required");
+    }
+
+    if (expense.amount <= 0) {
+      throw new Error("Amount must be greater than 0");
+    }
+
     const response = await fetch(`${BASE_URL}/api/v1/expenses`, {
       method: "POST",
       headers: this.getAuthHeaders(),
-      body: JSON.stringify(expense),
+      body: JSON.stringify({
+        title: expense.title.trim(),
+        amount: expense.amount,
+        category: expense.category,
+        date: expense.date,
+      }),
     });
 
     const result: ApiResponse<Expense> = await this.handleResponse(response);
@@ -117,10 +148,45 @@ class ApiService {
   }
 
   async updateExpense(id: string, expense: Partial<Expense>): Promise<Expense> {
+    // Validate ID
+    if (!id || id.trim() === "") {
+      throw new Error("Expense ID is required");
+    }
+
+    // Validate required fields if they're being updated
+    const updateData: any = {};
+
+    if (expense.title !== undefined) {
+      if (!expense.title.trim()) {
+        throw new Error("Title cannot be empty");
+      }
+      updateData.title = expense.title.trim();
+    }
+
+    if (expense.amount !== undefined) {
+      if (expense.amount <= 0) {
+        throw new Error("Amount must be greater than 0");
+      }
+      updateData.amount = expense.amount;
+    }
+
+    if (expense.category !== undefined) {
+      if (!expense.category) {
+        throw new Error("Category is required");
+      }
+      updateData.category = expense.category;
+    }
+
+    if (expense.date !== undefined) {
+      updateData.date = expense.date;
+    }
+
+    console.log("Updating expense with ID:", id, "Data:", updateData); // Debug log
+
     const response = await fetch(`${BASE_URL}/api/v1/expenses/${id}`, {
-      method: "PUT",
+      method: "PATCH",
       headers: this.getAuthHeaders(),
-      body: JSON.stringify(expense),
+      body: JSON.stringify(updateData),
     });
 
     const result: ApiResponse<Expense> = await this.handleResponse(response);
@@ -128,6 +194,10 @@ class ApiService {
   }
 
   async deleteExpense(id: string): Promise<void> {
+    if (!id || id.trim() === "") {
+      throw new Error("Expense ID is required");
+    }
+
     const response = await fetch(`${BASE_URL}/api/v1/expenses/${id}`, {
       method: "DELETE",
       headers: this.getAuthHeaders(),
@@ -139,7 +209,24 @@ class ApiService {
   // Helper method to check if user is authenticated
   isAuthenticated(): boolean {
     if (typeof window === "undefined") return false;
-    return !!localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+    if (!token) return false;
+
+    // Optional: Check if token is expired (if you have token expiry info)
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      const currentTime = Date.now() / 1000;
+      if (payload.exp && payload.exp < currentTime) {
+        this.logout();
+        return false;
+      }
+    } catch (error) {
+      console.error("Error parsing token:", error);
+      this.logout();
+      return false;
+    }
+
+    return true;
   }
 
   // Helper method to get current user
