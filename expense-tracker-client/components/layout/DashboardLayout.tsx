@@ -47,7 +47,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           onClose={() => setSidebarOpen(false)} 
         />
         
-        <main className="flex-1 lg:ml-64">
+        <main className="flex-1 ">
           <div className="p-6">
             {children}
           </div>

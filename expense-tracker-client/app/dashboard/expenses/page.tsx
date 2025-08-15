@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ExpenseTable } from "@/components/tables/ExpenseTable";
 import { ExpenseForm } from "@/components/forms/ExpenseForm";
@@ -74,30 +74,8 @@ export default function ExpensesPage() {
 
   const { user, isLoading: isAuthLoading } = useAuth();
 
-  useEffect(() => {
-    if (!isAuthLoading && user) {
-      loadExpenses();
-    }
-  }, [user, isAuthLoading]);
-
-  useEffect(() => {
-    applyFilters();
-  }, [expenses, searchTerm, selectedCategory, dateFrom, dateTo]);
-
-  const loadExpenses = async () => {
-    try {
-      const data = await apiService.getExpenses();
-      const expensesArray = Array.isArray(data) ? data : data.expenses || [];
-      setExpenses(expensesArray);
-    } catch (error) {
-      console.error("Failed to load expenses:", error);
-      toast.error("Failed to load expenses");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const applyFilters = () => {
+  // Memoize applyFilters to prevent unnecessary re-renders
+  const applyFilters = useCallback(() => {
     let filtered = [...expenses];
 
     // Search filter
@@ -133,7 +111,34 @@ export default function ExpensesPage() {
 
     setFilteredExpenses(filtered);
     setCurrentPage(1); // Reset to first page when filters change
+  }, [expenses, searchTerm, selectedCategory, dateFrom, dateTo]);
+
+  const loadExpenses = async () => {
+    try {
+      const data = await apiService.getExpenses();
+      // Fix: Type the response properly to handle both array and object with expenses property
+      const expensesArray: Expense[] = Array.isArray(data)
+        ? data
+        : (data as { expenses?: Expense[] }).expenses || [];
+      setExpenses(expensesArray);
+    } catch (error) {
+      console.error("Failed to load expenses:", error);
+      toast.error("Failed to load expenses");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    if (!isAuthLoading && user) {
+      loadExpenses();
+    }
+  }, [user, isAuthLoading]);
+
+  // Fix: Include applyFilters in the dependency array
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
 
   const handleEdit = (expense: Expense) => {
     setEditingExpense(expense);
@@ -259,7 +264,7 @@ export default function ExpensesPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">
                   Search
@@ -355,8 +360,8 @@ export default function ExpensesPage() {
             </div>
 
             {hasActiveFilters && (
-              <div className="flex justify-end">
-                <Button variant="outline" onClick={clearFilters}>
+              <div className="flex justify-end pt-2">
+                <Button variant="outline" onClick={clearFilters} size="sm">
                   Clear Filters
                 </Button>
               </div>
@@ -364,7 +369,7 @@ export default function ExpensesPage() {
           </CardContent>
         </Card>
 
-        {/* Expense Table */}
+        {/* Responsive Expense Display */}
         {loading ? (
           <Card className="border-0 shadow-sm">
             <CardContent className="p-12 text-center">
@@ -373,18 +378,100 @@ export default function ExpensesPage() {
           </Card>
         ) : (
           <>
-            <ExpenseTable
-              expenses={filteredExpenses}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              currentPage={currentPage}
-              itemsPerPage={itemsPerPage}
-            />
+            {/* Desktop Table View */}
+            <div className="hidden lg:block">
+              <ExpenseTable
+                expenses={filteredExpenses}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                currentPage={currentPage}
+                itemsPerPage={itemsPerPage}
+              />
+            </div>
+
+            {/* Mobile/Tablet Card View */}
+            <div className="block lg:hidden space-y-3">
+              {filteredExpenses
+                .slice(
+                  (currentPage - 1) * itemsPerPage,
+                  currentPage * itemsPerPage
+                )
+                .map((expense) => (
+                  <Card
+                    key={expense._id}
+                    className="border-0 shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-gray-900 text-lg leading-tight">
+                            {expense.title}
+                          </h3>
+                          <p className="text-sm text-gray-600 mt-1">
+                            {format(new Date(expense.date), "MMM dd, yyyy")}
+                          </p>
+                        </div>
+                        <div className="text-right ml-4">
+                          <p className="text-xl font-bold text-gray-900">
+                            ${expense.amount.toFixed(2)}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between mb-4">
+                        <Badge
+                          variant="secondary"
+                          className="bg-blue-50 text-blue-700 border-blue-200"
+                        >
+                          {expense.category}
+                        </Badge>
+                      </div>
+
+                      {(expense as any).description && (
+                        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                          {(expense as any).description}
+                        </p>
+                      )}
+
+                      <div className="flex justify-end space-x-2 pt-2 border-t border-gray-100">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEdit(expense)}
+                          className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDelete(expense._id || "")}
+                          className="text-red-600 border-red-200 hover:bg-red-50"
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+
+              {filteredExpenses.length === 0 && (
+                <Card className="border-0 shadow-sm">
+                  <CardContent className="p-12 text-center">
+                    <div className="text-gray-500">
+                      {hasActiveFilters
+                        ? "No expenses found matching your filters"
+                        : "No expenses found. Add your first expense to get started!"}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-600">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p className="text-sm text-gray-600 order-2 sm:order-1">
                   Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
                   {Math.min(
                     currentPage * itemsPerPage,
@@ -393,18 +480,22 @@ export default function ExpensesPage() {
                   of {filteredExpenses.length} results
                 </p>
 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 order-1 sm:order-2">
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                     disabled={currentPage === 1}
+                    className="flex items-center"
                   >
-                    <ChevronLeft className="w-4 h-4" />
-                    Previous
+                    <ChevronLeft className="w-4 h-4 mr-1" />
+                    <span className="hidden sm:inline">Previous</span>
+                    <span className="sm:hidden">Prev</span>
                   </Button>
 
+                  {/* Mobile-optimized pagination */}
                   <div className="flex items-center space-x-1">
+                    {/* Show fewer page numbers on mobile */}
                     {Array.from({ length: totalPages }, (_, i) => i + 1)
                       .filter(
                         (page) =>
@@ -412,10 +503,13 @@ export default function ExpensesPage() {
                           page === totalPages ||
                           (page >= currentPage - 1 && page <= currentPage + 1)
                       )
+                      .slice(0, window.innerWidth < 640 ? 3 : 5) // Show fewer on mobile
                       .map((page, index, array) => (
                         <div key={page} className="flex items-center">
                           {index > 0 && array[index - 1] !== page - 1 && (
-                            <span className="px-2 text-gray-400">...</span>
+                            <span className="px-1 text-gray-400 text-sm">
+                              ...
+                            </span>
                           )}
                           <Button
                             variant={
@@ -423,7 +517,7 @@ export default function ExpensesPage() {
                             }
                             size="sm"
                             onClick={() => setCurrentPage(page)}
-                            className="w-8 h-8 p-0"
+                            className="w-8 h-8 p-0 text-sm"
                           >
                             {page}
                           </Button>
@@ -438,9 +532,11 @@ export default function ExpensesPage() {
                       setCurrentPage(Math.min(totalPages, currentPage + 1))
                     }
                     disabled={currentPage === totalPages}
+                    className="flex items-center"
                   >
-                    Next
-                    <ChevronRight className="w-4 h-4" />
+                    <span className="hidden sm:inline">Next</span>
+                    <span className="sm:hidden">Next</span>
+                    <ChevronRight className="w-4 h-4 ml-1" />
                   </Button>
                 </div>
               </div>
