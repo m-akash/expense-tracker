@@ -34,7 +34,8 @@ export const getAllExpenses = async (req, res, next) => {
       order = "desc",
     } = req.query;
 
-    const query = {};
+    // FIXED: Add userId to query to only get user's expenses
+    const query = { userId: req.user._id };
     if (category) {
       query.category = { $regex: category, $options: "i" };
     }
@@ -83,13 +84,20 @@ export const getExpenseById = async (req, res, next) => {
         message: "Invalid expense ID",
       });
     }
-    const expense = await Expense.findById(req.params.id);
+
+    //Check if expense belongs to the authenticated user
+    const expense = await Expense.findOne({
+      _id: req.params.id,
+      userId: req.user._id,
+    });
+
     if (!expense) {
       return res.status(404).json({
         success: false,
         message: "Expense not found",
       });
     }
+
     res.status(200).json({
       success: true,
       data: expense,
@@ -108,29 +116,64 @@ export const updateExpense = async (req, res, next) => {
         message: "Invalid expense ID",
       });
     }
+
     const { title, amount, category, date } = req.body;
+
+    // Validate required fields
+    if (!title || !amount || !category || !date) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields (title, amount, category, date) are required",
+      });
+    }
+
+    // Validate amount
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Amount must be a valid positive number",
+      });
+    }
+
     const updateData = {
-      title,
-      amount: parseFloat(amount),
+      title: title.trim(),
+      amount: parsedAmount,
       category,
       date: new Date(date),
     };
-    const expense = await Expense.findByIdAndUpdate(req.params.id, updateData, {
-      new: true,
-      runValidators: true,
-    });
+
+    const expense = await Expense.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user._id }, // Match both ID and userId
+      updateData,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
     if (!expense) {
       return res.status(404).json({
         success: false,
-        message: "Expense not found",
+        message: "Expense not found or you don't have permission to update it",
       });
     }
+
     res.status(200).json({
       success: true,
       message: "Expense updated successfully",
       data: expense,
     });
   } catch (error) {
+    // Handle validation errors
+    if (error.name === "ValidationError") {
+      const errors = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({
+        success: false,
+        message: "Validation error",
+        errors: errors,
+      });
+    }
     next(error);
   }
 };
@@ -144,13 +187,20 @@ export const deleteExpense = async (req, res, next) => {
         message: "Invalid expense ID",
       });
     }
-    const expense = await Expense.findByIdAndDelete(req.params.id);
+
+    //Only delete expense if it belongs to the authenticated user
+    const expense = await Expense.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.user._id,
+    });
+
     if (!expense) {
       return res.status(404).json({
         success: false,
-        message: "Expense not found",
+        message: "Expense not found or you don't have permission to delete it",
       });
     }
+
     res.status(200).json({
       success: true,
       message: "Expense deleted successfully",
