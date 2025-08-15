@@ -1,5 +1,5 @@
-const BASE_URL = "http://localhost:5500";
-//  process.env.NEXT_PUBLIC_API_URL || 
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5500";
+
 interface LoginData {
   email: string;
   password: string;
