@@ -22,7 +22,7 @@ This is the backend API for the Expense Tracker application. It is built with No
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/expense-tracker.git
+   git clone https://github.com/m-akash/expense-tracker
    ```
 2. Navigate to the `expense-tracker-api` directory:
    ```bash
@@ -102,7 +102,3 @@ expense-tracker-api/
 ├── package-lock.json
 └── package.json
 ```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a pull request.
