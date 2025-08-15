@@ -22,7 +22,7 @@ This is the frontend for the Expense Tracker application, built with Next.js, Ta
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/expense-tracker.git
+   git clone https://github.com/m-akash/expense-tracker
    ```
 2. Navigate to the `expense-tracker-client` directory:
    ```bash
@@ -90,7 +90,3 @@ expense-tracker-client/
 ├── tailwind.config.ts
 └── tsconfig.json
 ```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a pull request.
