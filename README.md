@@ -43,6 +43,12 @@ This is a comprehensive full-stack expense tracker application designed to help 
 - [JWT](https://jwt.io/)
 - [Bcrypt.js](https://www.npmjs.com/package/bcryptjs)
 
+## Live Demo
+
+- **Live Application**: [Expense-Tracker](https://daily-expenditure.vercel.app/)
+- **Frontend Repository**: [GitHub Frontend](https://github.com/m-akash/expense-tracker/tree/main/expense-tracker-client)
+- **Backend Repository**: [GitHub Backend](https://github.com/m-akash/expense-tracker/tree/main/expense-tracker-api)
+
 ## Getting Started
 
 ### Prerequisites
@@ -84,7 +90,7 @@ This is a comprehensive full-stack expense tracker application designed to help 
    ```bash
    npm run dev
    ```
-   The API will be running at `http://localhost:5000`.
+   The API will be running at `http://localhost:5500`.
 
 ### Frontend Setup
 
@@ -164,6 +170,12 @@ expense-tracker/
 - `DB_URI`: Your MongoDB connection string.
 - `JWT_SECRET`: A secret key for signing JWTs.
 - `JWT_EXPIRES_IN`: The expiration time for JWTs (e.g., `1d`, `7d`).
+
+## Author
+
+**Mehedi Hasan Akash**  
+- GitHub: [@m-akash](https://github.com/m-akash)  
+- LinkedIn: [Mehedi Hasan Akash](https://www.linkedin.com/in/mehedi-hasan-akash/)
 
 
 
