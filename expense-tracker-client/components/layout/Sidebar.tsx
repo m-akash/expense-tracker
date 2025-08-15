@@ -11,7 +11,6 @@ import {
   BarChart3,
   Settings,
   TrendingUp,
-  Filter,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -45,12 +44,12 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Sidebar */}
       <div
         className={cn(
-          "fixed top-16 left-0 z-50 h-[calc(100vh-4rem)] w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:top-0 lg:h-screen lg:z-0",
-          isOpen ? "translate-x-0" : "-translate-x-full"
+          "fixed top-16 left-0 z-50 h-[calc(100vh-4rem)] w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-in-out overflow-hidden lg:relative lg:translate-x-0 lg:top-0 lg:h-full lg:z-0",
+          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
         <div className="flex flex-col h-full">
-          <div className="flex-1 px-4 py-6 space-y-1">
+          <div className="flex-1 px-4 py-6 overflow-hidden">
             <nav className="space-y-1">
               {navigation.map((item) => {
                 const isActive = pathname === item.href;
@@ -78,7 +77,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             </nav>
           </div>
 
-          <div className="px-4 pb-6">
+          <div className="px-4 pb-6 flex-shrink-0">
             <div className="border-t border-gray-200 pt-4">
               {secondaryNavigation.map((item) => {
                 const isActive = pathname === item.href;

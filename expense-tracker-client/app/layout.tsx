@@ -7,6 +7,9 @@ import { Toaster } from "sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  icons: {
+    icon: "/expense-fav-32.ico",
+  },
   title: "Personal Expense Tracker",
   description: "Professional expense tracking made simple",
 };

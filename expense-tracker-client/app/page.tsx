@@ -20,7 +20,7 @@ export default function HomePage() {
   }, [user, isLoading, router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="flex items-center space-x-2">
         <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
         <span className="text-lg font-medium text-gray-700">Loading...</span>
