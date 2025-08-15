@@ -36,6 +36,6 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, async (req, res) => {
-  console.log(`Expense tracker api running on port: http://localhost:${PORT}`);
+  console.log(`Expense tracker api running at port: http://localhost:${PORT}`);
   await connectToDatabase();
 });
