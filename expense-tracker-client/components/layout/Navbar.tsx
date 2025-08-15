@@ -46,7 +46,7 @@ export function Navbar({ onToggleSidebar }: NavbarProps) {
             <div className="flex items-center justify-center w-8 h-8 bg-blue-600 rounded-lg">
               <DollarSign className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl font-bold text-gray-900 hidden sm:block">
+            <h1 className="text-2xl px-5 font-bold text-gray-900 hidden sm:block">
               Personal Expense Tracker
             </h1>
           </div>
