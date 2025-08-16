@@ -188,7 +188,7 @@ export default function AnalyticsPage() {
                     </Pie>
                     <Tooltip
                       formatter={(value: number) => [
-                        `$${value.toFixed(2)}`,
+                        `৳${value.toFixed(2)}`,
                         "Amount",
                       ]}
                     />
@@ -217,7 +217,7 @@ export default function AnalyticsPage() {
                     <YAxis tick={{ fontSize: 12 }} />
                     <Tooltip
                       formatter={(value: number) => [
-                        `$${value.toFixed(2)}`,
+                        `৳${value.toFixed(2)}`,
                         "Amount",
                       ]}
                       labelFormatter={(value) => {
@@ -273,7 +273,7 @@ export default function AnalyticsPage() {
                       </div>
                       <div className="text-right">
                         <div className="font-semibold text-blue-400">
-                          ${category.value.toFixed(2)}
+                          ৳{category.value.toFixed(2)}
                         </div>
                         <div className="text-sm text-blue-300">
                           {((category.value / totalAmount) * 100).toFixed(1)}%

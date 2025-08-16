@@ -48,14 +48,14 @@ export default function DashboardPage() {
   const stats = [
     {
       title: "Total Expenses",
-      value: `$${totalAmount.toFixed(2)}`,
+      value: `৳${totalAmount.toFixed(2)}`,
       icon: DollarSign,
       color: "text-blue-600",
       bgColor: "bg-blue-100",
     },
     {
       title: "This Month",
-      value: `$${thisMonthTotal.toFixed(2)}`,
+      value: `৳${thisMonthTotal.toFixed(2)}`,
       icon: Calendar,
       color: "text-green-600",
       bgColor: "bg-green-100",
@@ -69,7 +69,7 @@ export default function DashboardPage() {
     },
     {
       title: "Average/Month",
-      value: `$${(totalAmount / 12).toFixed(2)}`,
+      value: `৳${(totalAmount / 12).toFixed(2)}`,
       icon: TrendingUp,
       color: "text-orange-600",
       bgColor: "bg-orange-100",
@@ -142,7 +142,7 @@ export default function DashboardPage() {
                       </p>
                     </div>
                     <div className="text-lg font-semibold text-blue-400">
-                      ${expense.amount.toFixed(2)}
+                      ৳{expense.amount.toFixed(2)}
                     </div>
                   </div>
                 ))}

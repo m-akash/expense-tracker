@@ -35,6 +35,8 @@ import {
   Plus,
   ChevronLeft,
   ChevronRight,
+  Edit,
+  Trash2,
 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -209,7 +211,7 @@ export default function ExpensesPage() {
             </p>
           </div>
           <Link href={"/dashboard/add-expense"}>
-            <Button className="bg-blue-800 hover:bg-blue-700 text-gray-300">
+            <Button className="bg-blue-500 hover:bg-blue-400 text-gray-200">
               <Plus className="w-4 h-4 mr-2" />
               Add Expense
             </Button>
@@ -225,7 +227,7 @@ export default function ExpensesPage() {
                   Total {hasActiveFilters ? "Filtered" : ""} Expenses
                 </p>
                 <p className="text-3xl font-bold text-blue-400">
-                  ${totalAmount.toFixed(2)}
+                  ৳{totalAmount.toFixed(2)}
                 </p>
                 <p className="text-sm text-blue-300 mt-1">
                   {filteredExpenses.length} transaction
@@ -414,15 +416,15 @@ export default function ExpensesPage() {
                         </div>
                         <div className="text-right ml-4">
                           <p className="text-xl font-bold text-blue-400">
-                            ${expense.amount.toFixed(2)}
+                            ৳{expense.amount.toFixed(2)}
                           </p>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center justify-end mb-4">
                         <Badge
                           variant="secondary"
-                          className="bg-gray-300 text-blue-900 border-gray-200"
+                          className="bg-gray-700 text-gray-100 border-gray-200"
                         >
                           {expense.category}
                         </Badge>
@@ -434,22 +436,22 @@ export default function ExpensesPage() {
                         </p>
                       )}
 
-                      <div className="flex justify-end space-x-2 pt-2 border-t border-gray-500">
+                      <div className="flex justify-between pt-2 border-t border-gray-500">
                         <Button
-                          variant="outline"
+                          variant="ghost"
                           size="sm"
                           onClick={() => handleEdit(expense)}
-                          className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                          className="h-8 w-8 p-0 text-blue-400 hover:bg-blue-200 hover:text-blue-600"
                         >
-                          Edit
+                          <Edit className="h-6 w-6" />
                         </Button>
                         <Button
-                          variant="outline"
+                          variant="ghost"
                           size="sm"
                           onClick={() => handleDelete(expense._id || "")}
-                          className="text-red-600 border-red-200 hover:bg-red-50"
+                          className="h-8 w-8 p-0 text-blue-400 hover:bg-red-200 hover:text-red-600"
                         >
-                          Delete
+                          <Trash2 className="h-6 w-6" />
                         </Button>
                       </div>
                     </CardContent>

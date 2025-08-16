@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Bell, Settings, LogOut, DollarSign, Menu } from "lucide-react";
+import { Bell, LogOut, DollarSign, Menu } from "lucide-react";
 
 interface NavbarProps {
   onToggleSidebar: () => void;
@@ -28,7 +28,6 @@ export function Navbar({ onToggleSidebar }: NavbarProps) {
       .toUpperCase()
       .slice(0, 2);
   };
-  // border - gray - 200;
   return (
     <nav className="bg-gray-900 border-b border-gray-600 px-4 py-3 sticky top-0 z-40">
       <div className="flex items-center justify-between">
@@ -64,7 +63,7 @@ export function Navbar({ onToggleSidebar }: NavbarProps) {
                 className="relative h-10 w-10 rounded-full"
               >
                 <Avatar>
-                  <AvatarFallback className="bg-gray-800 text-blue-500 font-extrabold">
+                  <AvatarFallback className="bg-gray-800 text-blue-400 font-semibold">
                     {user ? getInitials(user.name) : "U"}
                   </AvatarFallback>
                 </Avatar>

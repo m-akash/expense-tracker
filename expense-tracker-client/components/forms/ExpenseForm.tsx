@@ -204,7 +204,7 @@ export function ExpenseForm({
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Button
               type="submit"
-              className="flex-1 h-11 bg-blue-800 hover:bg-blue-700 text-gray-300"
+              className="flex-1 h-11 bg-blue-500 hover:bg-blue-400 text-gray-200"
               disabled={isLoading}
             >
               {isLoading ? (

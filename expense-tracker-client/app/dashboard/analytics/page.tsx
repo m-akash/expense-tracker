@@ -158,7 +158,7 @@ export default function AnalyticsPage() {
                     This Month
                   </p>
                   <p className="text-2xl font-bold text-blue-400">
-                    ${thisMonthAmount.toFixed(2)}
+                    ৳{thisMonthAmount.toFixed(2)}
                   </p>
                   <div className="flex items-center mt-2">
                     {monthlyChange >= 0 ? (
@@ -190,7 +190,7 @@ export default function AnalyticsPage() {
                     Average Expense
                   </p>
                   <p className="text-2xl font-bold text-blue-400">
-                    ${averageExpense.toFixed(2)}
+                    ৳{averageExpense.toFixed(2)}
                   </p>
                   <p className="text-sm text-blue-300 mt-2">Per transaction</p>
                 </div>
@@ -209,7 +209,7 @@ export default function AnalyticsPage() {
                     Total Expenses
                   </p>
                   <p className="text-2xl font-bold text-blue-400">
-                    ${totalAmount.toFixed(2)}
+                    ৳{totalAmount.toFixed(2)}
                   </p>
                   <p className="text-sm text-blue-300 mt-2">All time</p>
                 </div>
@@ -279,7 +279,7 @@ export default function AnalyticsPage() {
                     </Pie>
                     <Tooltip
                       formatter={(value: number) => [
-                        `$${value.toFixed(2)}`,
+                        `৳${value.toFixed(2)}`,
                         "Amount",
                       ]}
                     />
@@ -308,7 +308,7 @@ export default function AnalyticsPage() {
                     <YAxis tick={{ fontSize: 12 }} />
                     <Tooltip
                       formatter={(value: number) => [
-                        `$${value.toFixed(2)}`,
+                        `৳${value.toFixed(2)}`,
                         "Amount",
                       ]}
                       labelFormatter={(value) => {
@@ -364,7 +364,7 @@ export default function AnalyticsPage() {
                       </div>
                       <div className="text-right">
                         <div className="font-semibold text-blue-400">
-                          ${category.value.toFixed(2)}
+                          ৳{category.value.toFixed(2)}
                         </div>
                         <div className="text-sm text-blue-300">
                           {((category.value / totalAmount) * 100).toFixed(1)}%

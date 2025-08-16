@@ -34,7 +34,7 @@ interface ExpenseTableProps {
 }
 
 const categoryColors: { [key: string]: string } = {
-  "Food & Dining": "bg-red-100 text-red-800",
+  Food: "bg-red-100 text-red-800",
   Transportation: "bg-blue-100 text-blue-800",
   Shopping: "bg-purple-100 text-purple-800",
   Entertainment: "bg-pink-100 text-pink-800",
