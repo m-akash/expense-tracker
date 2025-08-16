@@ -80,3 +80,101 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Mobile-friendly SweetAlert2 styles with custom dark theme */
+.mobile-confirmation-popup {
+  max-width: 90vw !important;
+  margin: 1rem auto !important;
+}
+
+.custom-dark-popup {
+  background-color: #1F2937 !important;
+}
+
+.custom-title-color {
+  color: #3b82f6 !important;
+}
+
+/* Override SweetAlert2's default text color for the message */
+.custom-dark-popup .swal2-html-container {
+  color: #60a5fa !important;
+}
+
+/* Style the question icon to match the dark theme */
+.custom-dark-popup .swal2-icon.swal2-question {
+  border-color: #3b82f6 !important;
+  color: #3b82f6 !important;
+}
+
+.mobile-actions {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  margin-top: 1.5rem !important;
+  padding: 0 1rem !important;
+}
+
+.mobile-confirm-btn,
+.mobile-cancel-btn {
+  min-height: 44px !important;
+  min-width: 80px !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  padding: 10px 20px !important;
+  border-radius: 6px !important;
+  border: none !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+  display: inline-block !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+.mobile-confirm-btn {
+  background-color: #d33 !important;
+  color: white !important;
+}
+
+.mobile-cancel-btn {
+  background-color: #3085d6 !important;
+  color: white !important;
+}
+
+/* Ensure buttons are visible on all screen sizes */
+@media (max-width: 768px) {
+  .swal2-actions {
+    display: flex !important;
+    justify-content: space-around !important;
+    width: 100% !important;
+    margin: 1rem 0 0 0 !important;
+  }
+
+  .mobile-confirm-btn,
+  .mobile-cancel-btn {
+    flex: 1 !important;
+    margin: 0 5px !important;
+    max-width: 45% !important;
+  }
+}
+
+/* Prevent iOS zoom on button tap */
+@media (max-width: 480px) {
+  .mobile-confirm-btn,
+  .mobile-cancel-btn {
+    font-size: 16px !important;
+  }
+}
+
+/* Force visibility of action buttons */
+.swal2-actions {
+  visibility: visible !important;
+  display: flex !important;
+  opacity: 1 !important;
+}
+
+.swal2-confirm,
+.swal2-cancel {
+  visibility: visible !important;
+  display: inline-block !important;
+  opacity: 1 !important;
+}

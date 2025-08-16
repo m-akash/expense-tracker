@@ -33,19 +33,6 @@ interface ExpenseTableProps {
   itemsPerPage: number;
 }
 
-const categoryColors: { [key: string]: string } = {
-  Food: "bg-red-100 text-red-800",
-  Transportation: "bg-blue-100 text-blue-800",
-  Shopping: "bg-purple-100 text-purple-800",
-  Entertainment: "bg-pink-100 text-pink-800",
-  "Bills & Utilities": "bg-yellow-100 text-yellow-800",
-  Healthcare: "bg-green-100 text-green-800",
-  Education: "bg-indigo-100 text-indigo-800",
-  Travel: "bg-cyan-100 text-cyan-800",
-  Groceries: "bg-orange-100 text-orange-800",
-  Others: "bg-gray-100 text-gray-800",
-};
-
 export function ExpenseTable({
   expenses,
   onEdit,
@@ -73,17 +60,11 @@ export function ExpenseTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="font-extrabold text-blue-400">
-              Title
-            </TableHead>
-            <TableHead className="font-extrabold text-blue-400">
-              Amount
-            </TableHead>
-            <TableHead className="font-extrabold text-blue-400">
-              Category
-            </TableHead>
-            <TableHead className="font-extrabold text-blue-400">Date</TableHead>
-            <TableHead className="font-extrabold text-right text-blue-400">
+            <TableHead className="font-bold text-blue-400">Title</TableHead>
+            <TableHead className="font-bold text-blue-400">Amount</TableHead>
+            <TableHead className="font-bold text-blue-400">Category</TableHead>
+            <TableHead className="font-bold text-blue-400">Date</TableHead>
+            <TableHead className="font-bold text-right text-blue-400">
               Actions
             </TableHead>
           </TableRow>
@@ -104,22 +85,21 @@ export function ExpenseTable({
                 key={expense._id}
                 className="bg-gray-800 hover:bg-gray-700"
               >
-                <TableCell className="font-thin text-blue-400">
+                <TableCell className="font-semibold text-blue-400">
                   {expense.title}
                 </TableCell>
-                <TableCell className="font-thin text-blue-400">
-                  ${expense.amount.toFixed(2)}
+                <TableCell className="font-semibold text-blue-400">
+                  ৳{expense.amount.toFixed(2)}
                 </TableCell>
                 <TableCell>
                   <Badge
                     variant="secondary"
-                    className={`categoryColors[expense.category] ||
-                      categoryColors["Others"]`}
+                    className="bg-gray-700 text-blue-400 border-gray-200"
                   >
                     {expense.category}
                   </Badge>
                 </TableCell>
-                <TableCell className="font-thin text-blue-400">
+                <TableCell className="font-semibold text-blue-400">
                   {new Date(expense.date).toLocaleDateString()}
                 </TableCell>
                 <TableCell className="text-right">

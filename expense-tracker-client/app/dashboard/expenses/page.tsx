@@ -43,17 +43,37 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
 import Link from "next/link";
+import {
+  closeLoadingAlert,
+  showConfirmationDialog,
+  showErrorAlert,
+  showLoadingAlert,
+  showSuccessAlert,
+} from "@/lib/alertUtils";
 
+// This is the lexicographical sorted list of categories used in the select dropdown
 const categories = [
-  "Food & Dining",
-  "Transportation",
-  "Shopping",
-  "Entertainment",
-  "Bills & Utilities",
-  "Healthcare",
+  "Bills&Utilities",
+  "Business",
+  "Clothing",
+  "Dining Out",
+  "Donations",
   "Education",
-  "Travel",
+  "Entertainment",
+  "Food",
+  "Gifts",
   "Groceries",
+  "Healthcare",
+  "Housing",
+  "Insurance",
+  "Miscellaneous",
+  "Mortgage",
+  "Personal Care",
+  "Rent",
+  "Shopping",
+  "Subscriptions",
+  "Transportation",
+  "Travel",
   "Others",
 ];
 
@@ -76,11 +96,8 @@ export default function ExpensesPage() {
 
   const { user, isLoading: isAuthLoading } = useAuth();
 
-  // Memoize applyFilters to prevent unnecessary re-renders
   const applyFilters = useCallback(() => {
     let filtered = [...expenses];
-
-    // Search filter
     if (searchTerm) {
       filtered = filtered.filter(
         (expense) =>
@@ -89,14 +106,12 @@ export default function ExpensesPage() {
       );
     }
 
-    // Category filter - Updated logic to handle "all" value
     if (selectedCategory && selectedCategory !== "all") {
       filtered = filtered.filter(
         (expense) => expense.category === selectedCategory
       );
     }
 
-    // Date range filter
     if (dateFrom) {
       filtered = filtered.filter(
         (expense) => new Date(expense.date) >= dateFrom
@@ -112,13 +127,12 @@ export default function ExpensesPage() {
     );
 
     setFilteredExpenses(filtered);
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1);
   }, [expenses, searchTerm, selectedCategory, dateFrom, dateTo]);
 
   const loadExpenses = async () => {
     try {
       const data = await apiService.getExpenses();
-      //Type the response properly to handle both array and object with expenses property
       const expensesArray: Expense[] = Array.isArray(data)
         ? data
         : (data as { expenses?: Expense[] }).expenses || [];
@@ -136,7 +150,6 @@ export default function ExpensesPage() {
     }
   }, [user, isAuthLoading]);
 
-  // Fix: Include applyFilters in the dependency array
   useEffect(() => {
     applyFilters();
   }, [applyFilters]);
@@ -148,12 +161,21 @@ export default function ExpensesPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      await apiService.deleteExpense(id);
-      setExpenses(expenses.filter((expense) => expense._id !== id));
-      toast.success("Expense deleted successfully");
+      const result = await showConfirmationDialog(
+        "Delete Expense",
+        "Are you sure you want to delete this? This action cannot be undone."
+      );
+      if (result.isConfirmed) {
+        showLoadingAlert("Deleting expense...");
+        await apiService.deleteExpense(id);
+        closeLoadingAlert();
+        setExpenses(expenses.filter((expense) => expense._id !== id));
+        showSuccessAlert("You expense have been deleted successfully!");
+      }
     } catch (error) {
       console.error("Failed to delete expense:", error);
-      toast.error("Failed to delete expense");
+      closeLoadingAlert();
+      showErrorAlert("Failed to delete expense. Please try again.");
     }
   };
 
@@ -161,10 +183,7 @@ export default function ExpensesPage() {
     if (!editingExpense?._id) return;
 
     try {
-      const result = await apiService.updateExpense(
-        editingExpense._id,
-        updatedExpense
-      );
+      await apiService.updateExpense(editingExpense._id, updatedExpense);
       setExpenses(
         expenses.map((expense) =>
           expense._id === editingExpense._id
@@ -424,7 +443,7 @@ export default function ExpensesPage() {
                       <div className="flex items-center justify-end mb-4">
                         <Badge
                           variant="secondary"
-                          className="bg-gray-700 text-gray-100 border-gray-200"
+                          className="bg-gray-700 text-blue-400 border-gray-200"
                         >
                           {expense.category}
                         </Badge>
@@ -445,6 +464,7 @@ export default function ExpensesPage() {
                         >
                           <Edit className="h-6 w-6" />
                         </Button>
+
                         <Button
                           variant="ghost"
                           size="sm"
