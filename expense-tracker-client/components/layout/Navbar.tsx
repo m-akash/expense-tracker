@@ -39,7 +39,7 @@ export function Navbar({ onToggleSidebar }: NavbarProps) {
             onClick={onToggleSidebar}
             className="lg:hidden"
           >
-            <Menu className="w-5 h-5 text-blue-400" />
+            <Menu className="w-8 h-8 text-blue-400" />
           </Button>
 
           <div className="flex items-center space-x-2">
