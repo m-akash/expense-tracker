@@ -105,7 +105,7 @@ class ApiService {
   }
 
   async getExpenses(): Promise<Expense[]> {
-    const response = await fetch(`${BASE_URL}/api/v1/expenses`, {
+    const response = await fetch(`${BASE_URL}/api/v1/expenses?limit=10000`, {
       headers: this.getAuthHeaders(),
     });
 

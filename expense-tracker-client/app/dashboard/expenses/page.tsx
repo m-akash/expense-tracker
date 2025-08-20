@@ -21,6 +21,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -43,13 +53,6 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
 import Link from "next/link";
-import {
-  closeLoadingAlert,
-  showConfirmationDialog,
-  showErrorAlert,
-  showLoadingAlert,
-  showSuccessAlert,
-} from "@/lib/alertUtils";
 
 // This is the lexicographical sorted list of categories used in the select dropdown
 const categories = [
@@ -83,6 +86,11 @@ export default function ExpensesPage() {
   const [loading, setLoading] = useState(true);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+
+  // Delete confirmation state
+  const [deleteExpense, setDeleteExpense] = useState<Expense | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   // Filters
   const [searchTerm, setSearchTerm] = useState("");
@@ -132,10 +140,11 @@ export default function ExpensesPage() {
 
   const loadExpenses = async () => {
     try {
-      const data = await apiService.getExpenses();
-      const expensesArray: Expense[] = Array.isArray(data)
-        ? data
-        : (data as { expenses?: Expense[] }).expenses || [];
+      const response = await apiService.getExpenses();
+      // Handle the API response structure correctly
+      const expensesArray: Expense[] = Array.isArray(response)
+        ? response
+        : (response as { data?: Expense[] }).data || [];
       setExpenses(expensesArray);
     } catch (error) {
       console.error("Failed to load expenses:", error);
@@ -159,24 +168,34 @@ export default function ExpensesPage() {
     setIsEditDialogOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDeleteClick = (expense: Expense) => {
+    setDeleteExpense(expense);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteExpense?._id) return;
+
     try {
-      const result = await showConfirmationDialog(
-        "Delete Expense",
-        "Are you sure you want to delete this? This action cannot be undone."
+      setDeletingId(deleteExpense._id);
+      await apiService.deleteExpense(deleteExpense._id);
+      setExpenses(
+        expenses.filter((expense) => expense._id !== deleteExpense._id)
       );
-      if (result.isConfirmed) {
-        showLoadingAlert("Deleting expense...");
-        await apiService.deleteExpense(id);
-        closeLoadingAlert();
-        setExpenses(expenses.filter((expense) => expense._id !== id));
-        showSuccessAlert("You expense have been deleted successfully!");
-      }
+      toast.success("Expense deleted successfully!");
     } catch (error) {
       console.error("Failed to delete expense:", error);
-      closeLoadingAlert();
-      showErrorAlert("Failed to delete expense. Please try again.");
+      toast.error("Failed to delete expense. Please try again.");
+    } finally {
+      setDeletingId(null);
+      setIsDeleteDialogOpen(false);
+      setDeleteExpense(null);
     }
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteDialogOpen(false);
+    setDeleteExpense(null);
   };
 
   const handleUpdateExpense = async (updatedExpense: Omit<Expense, "_id">) => {
@@ -207,17 +226,22 @@ export default function ExpensesPage() {
     setDateTo(undefined);
   };
 
-  const totalAmount = filteredExpenses.reduce(
-    (sum, expense) => sum + expense.amount,
-    0
-  );
-  const totalPages = Math.ceil(filteredExpenses.length / itemsPerPage);
-  // Updated hasActiveFilters logic to account for "all" category selection
+  // Calculate totals based on filters
   const hasActiveFilters =
     searchTerm ||
     (selectedCategory && selectedCategory !== "all") ||
     dateFrom ||
     dateTo;
+
+  // If filters are active, show filtered total. Otherwise, show all expenses total
+  const totalAmount = hasActiveFilters
+    ? filteredExpenses.reduce((sum, expense) => sum + expense.amount, 0)
+    : expenses.reduce((sum, expense) => sum + expense.amount, 0);
+
+  const totalTransactions = hasActiveFilters
+    ? filteredExpenses.length
+    : expenses.length;
+  const totalPages = Math.ceil(filteredExpenses.length / itemsPerPage);
 
   return (
     <DashboardLayout>
@@ -249,8 +273,14 @@ export default function ExpensesPage() {
                   ৳{totalAmount.toFixed(2)}
                 </p>
                 <p className="text-sm text-blue-300 mt-1">
-                  {filteredExpenses.length} transaction
-                  {filteredExpenses.length !== 1 ? "s" : ""}
+                  {totalTransactions} transaction
+                  {totalTransactions !== 1 ? "s" : ""}
+                  {hasActiveFilters && (
+                    <span className="text-gray-400">
+                      {" "}
+                      (of {expenses.length} total)
+                    </span>
+                  )}
                 </p>
               </div>
               <div className="p-3 bg-gray-700 rounded-full">
@@ -405,9 +435,10 @@ export default function ExpensesPage() {
               <ExpenseTable
                 expenses={filteredExpenses}
                 onEdit={handleEdit}
-                onDelete={handleDelete}
+                onDelete={handleDeleteClick}
                 currentPage={currentPage}
                 itemsPerPage={itemsPerPage}
+                deletingId={deletingId}
               />
             </div>
 
@@ -468,8 +499,9 @@ export default function ExpensesPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => handleDelete(expense._id || "")}
+                          onClick={() => handleDeleteClick(expense)}
                           className="h-8 w-8 p-0 text-blue-400 hover:bg-red-200 hover:text-red-600"
+                          disabled={deletingId === expense._id}
                         >
                           <Trash2 className="h-6 w-6" />
                         </Button>
@@ -493,8 +525,8 @@ export default function ExpensesPage() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex flex-col bg-gray-800 text-blue-300 sm:flex-row items-center justify-between gap-4">
-                <p className="text-sm text-gray-600 order-2 sm:order-1">
+              <div className="flex flex-col bg-gray-800 text-blue-400 py-2 rounded-md sm:flex-row items-center justify-between gap-4">
+                <p className="text-sm md:pl-2 text-gray-600 order-2 sm:order-1">
                   Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
                   {Math.min(
                     currentPage * itemsPerPage,
@@ -582,6 +614,39 @@ export default function ExpensesPage() {
             )}
           </DialogContent>
         </Dialog>
+
+        {/* Delete Confirmation Dialog - Unified for both desktop and mobile */}
+        <AlertDialog
+          open={isDeleteDialogOpen}
+          onOpenChange={setIsDeleteDialogOpen}
+        >
+          <AlertDialogContent className="bg-gray-900 border-gray-700">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-blue-400">
+                Delete Expense
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-blue-300">
+                Are you sure you want to delete &quot;{deleteExpense?.title}
+                &quot;? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel
+                onClick={handleDeleteCancel}
+                className="bg-gray-700 text-blue-300 hover:bg-gray-600"
+              >
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDeleteConfirm}
+                disabled={!!deletingId}
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                {deletingId ? "Deleting..." : "Delete"}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </DashboardLayout>
   );

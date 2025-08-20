@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -11,26 +10,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Edit, Trash2 } from "lucide-react";
 import type { Expense } from "@/lib/api";
 
 interface ExpenseTableProps {
   expenses: Expense[];
   onEdit: (expense: Expense) => void;
-  onDelete: (id: string) => void;
+  onDelete: (expense: Expense) => void; // Changed from (id: string) to (expense: Expense)
   currentPage: number;
   itemsPerPage: number;
+  deletingId?: string | null; // Optional prop for loading state
 }
 
 export function ExpenseTable({
@@ -39,32 +28,28 @@ export function ExpenseTable({
   onDelete,
   currentPage,
   itemsPerPage,
+  deletingId,
 }: ExpenseTableProps) {
-  const [deletingId, setDeletingId] = useState<string | null>(null);
-
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedExpenses = expenses.slice(startIndex, endIndex);
-
-  const handleDelete = async (id: string) => {
-    setDeletingId(id);
-    try {
-      await onDelete(id);
-    } finally {
-      setDeletingId(null);
-    }
-  };
 
   return (
     <div className="bg-gray-800 rounded-lg border border-blue-900 overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="font-bold text-blue-400">Title</TableHead>
-            <TableHead className="font-bold text-blue-400">Amount</TableHead>
-            <TableHead className="font-bold text-blue-400">Category</TableHead>
-            <TableHead className="font-bold text-blue-400">Date</TableHead>
-            <TableHead className="font-bold text-right text-blue-400">
+            <TableHead className="font-extrabold text-blue-400">
+              Title
+            </TableHead>
+            <TableHead className="font-extrabold text-blue-400">
+              Amount
+            </TableHead>
+            <TableHead className="font-extrabold text-blue-400">
+              Category
+            </TableHead>
+            <TableHead className="font-extrabold text-blue-400">Date</TableHead>
+            <TableHead className="font-extrabold text-right text-blue-400">
               Actions
             </TableHead>
           </TableRow>
@@ -113,38 +98,15 @@ export function ExpenseTable({
                       <Edit className="h-4 w-4" />
                     </Button>
 
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0 text-blue-400 hover:bg-red-200 hover:text-red-600"
-                          disabled={deletingId === expense._id}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Delete Expense</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure you want to delete &quot;
-                            {expense.title}&quot;? This action cannot be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() =>
-                              expense._id && handleDelete(expense._id)
-                            }
-                            className="bg-red-600 hover:bg-red-700"
-                          >
-                            Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onDelete(expense)}
+                      className="h-8 w-8 p-0 text-blue-400 hover:bg-red-200 hover:text-red-600"
+                      disabled={deletingId === expense._id}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
                 </TableCell>
               </TableRow>
